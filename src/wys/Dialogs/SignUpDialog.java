@@ -75,41 +75,63 @@ public class SignUpDialog extends Dialog implements
 			IAsyncTask asyncTask = new SignupTask(user, SignUpDialog.this);
 			asyncTask.ExecuteSignupTask();
 		}
-		
 
 	}
 
 	private boolean CheckFields(String username, String pass, String email,
 			String confirmPass) {
-		if (username.isEmpty() || pass.isEmpty() || email.isEmpty()
-				|| confirmPass.isEmpty()) {
-			Toast.makeText(_ctx, "All fields are mandatory", Toast.LENGTH_SHORT)
-					.show();
+		if (email.isEmpty()) {
+
+			et_email.setError("email cannot be empty");
+			/*
+			 * Toast.makeText(_ctx, "All fields are mandatory",
+			 * Toast.LENGTH_SHORT) .show();
+			 */
 			return false;
 
+		} else if (username.isEmpty()) {
+			et_username.setError("username cannot be empty");
+			return false;
+			
+		}
+
+		else if (pass.isEmpty()) {
+			et_password.setError("password cannot be empty");
+			return false;
+		} else if (confirmPass.isEmpty()) {
+			et_confirm.setError("please enter confirm password");
+			return false;
 		} else {
 			if (!pass.equals(confirmPass)) {
 				Toast.makeText(_ctx, "Passwords dont match, Please Renter",
 						Toast.LENGTH_SHORT).show();
 				return false;
 			}
+			if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+			{
+				et_email.setError("Please enter a valid email address");
+				return false;
+			}
 		}
-		
+
 		return true;
 
 	}
 
 	@Override
 	public void OnSignUpSuccess() {
-		if (_prefeHelper.is_firstTimeUse() == true) {
-			_prefeHelper.set_firstTimeUse(false);
-		}
+		/*
+		 * if (_prefeHelper.is_firstTimeUse() == true) {
+		 * _prefeHelper.set_firstTimeUse(false); }
+		 */
 		SignUpDialog.this.dismiss();
 		if (_OnSignUpListener != null) {
-			_OnSignUpListener.OnSignUpSuccess();
+
 		}
-		Toast.makeText(_ctx, "Thanx for Signing up with us", Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(
+				_ctx,
+				"Email with Verification Code has been sent to you, Please Verify you Account",
+				Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

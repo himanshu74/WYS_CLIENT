@@ -34,7 +34,7 @@ public  class WysApi
 	
 		HttpResponse response;
 		JSONObject json = new JSONObject();
-		String Url = "http://129.107.148.95/WYS/api/user/";
+		String Url = "http://10.226.56.157/WYS/api/user/";
 		
 		try
 		{

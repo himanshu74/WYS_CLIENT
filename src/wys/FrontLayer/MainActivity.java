@@ -31,10 +31,10 @@ public class MainActivity extends BaseActivity implements OnSignUpListener {
 
 	private void InitControls() {
       btn_signup = (Button)findViewById(R.id.btn_sign_up);
-		if (GetWYSPreferences().is_firstTimeUse() == false) 
+		/*if (GetWYSPreferences().is_firstTimeUse() == false) 
 		{
              btn_signup.setText("Sign in");
-		}
+		}*/
 	}
 
 //	@Override
