@@ -4,15 +4,18 @@ import wys.AsyncTasks.IAsyncTask;
 import wys.AsyncTasks.SignupTask;
 import wys.Business.UserBo;
 import wys.CustomInterfaces.OnSignUpListener;
+import wys.FrontLayer.UserVerification;
 import wys.Helpers.PreferenceHelper;
 
 import com.example.wys_client.R;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.sax.StartElementListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,19 +65,35 @@ public class SignUpDialog extends Dialog implements
 	@Override
 	public void onClick(View v) {
 
-		UserBo user = new UserBo();
-		String username = et_username.getText().toString();
-		String password = et_password.getText().toString();
-		String email = et_email.getText().toString();
-		String confirm = et_confirm.getText().toString();
+		OpenVerificationScreen();
 
-		if (CheckFields(username, password, email, confirm)) {
-			user.set_username(et_username.getText().toString());
-			user.set_password(et_password.getText().toString());
-			user.set_email(et_email.getText().toString());
-			IAsyncTask asyncTask = new SignupTask(user, SignUpDialog.this);
-			asyncTask.ExecuteSignupTask();
-		}
+		/*
+		 * UserBo user = new UserBo(); String username =
+		 * et_username.getText().toString(); String password =
+		 * et_password.getText().toString(); String email =
+		 * et_email.getText().toString(); String confirm =
+		 * et_confirm.getText().toString();
+		 * 
+		 * if (CheckFields(username, password, email, confirm)) {
+		 * user.set_username(et_username.getText().toString());
+		 * user.set_password(et_password.getText().toString());
+		 * user.set_email(et_email.getText().toString()); IAsyncTask asyncTask =
+		 * new SignupTask(user, SignUpDialog.this);
+		 * asyncTask.ExecuteSignupTask(); }
+		 */
+	}
+
+	private void OpenVerificationScreen() {
+
+		SignUpDialog.this.dismiss();
+		/*
+		 * Intent i = new Intent(this._ctx,UserVerification.class);
+		 * _ctx.startActivity(i);
+		 */
+
+		VerificationDialog veriDialog = new VerificationDialog(_ctx);
+		veriDialog.setCanceledOnTouchOutside(false);
+		veriDialog.show();
 
 	}
 
@@ -89,10 +108,16 @@ public class SignUpDialog extends Dialog implements
 			 */
 			return false;
 
-		} else if (username.isEmpty()) {
+		} else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+				.matches()) {
+			et_email.setError("Please enter a valid email address");
+			return false;
+		}
+
+		else if (username.isEmpty()) {
 			et_username.setError("username cannot be empty");
 			return false;
-			
+
 		}
 
 		else if (pass.isEmpty()) {
@@ -103,15 +128,10 @@ public class SignUpDialog extends Dialog implements
 			return false;
 		} else {
 			if (!pass.equals(confirmPass)) {
-				Toast.makeText(_ctx, "Passwords dont match, Please Renter",
-						Toast.LENGTH_SHORT).show();
+				et_confirm.setError("Passwords dont match, please re enter");
 				return false;
 			}
-			if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
-			{
-				et_email.setError("Please enter a valid email address");
-				return false;
-			}
+
 		}
 
 		return true;
@@ -130,7 +150,7 @@ public class SignUpDialog extends Dialog implements
 		}
 		Toast.makeText(
 				_ctx,
-				"Email with Verification Code has been sent to you, Please Verify you Account",
+				"Email with Verification Code has been sent to you, Please Verify your Account",
 				Toast.LENGTH_SHORT).show();
 	}
 

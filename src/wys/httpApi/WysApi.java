@@ -5,6 +5,7 @@ import java.io.InputStream;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -26,15 +27,23 @@ public  class WysApi
 	private static final int SUCCESS =0;
 	private static final int ERROR =1;
 	
+	private static final String HOST ="http://";
+	private static final String DOMAIN ="";
+	
+	public String GetUrl(String path)
+	{
+		return HOST+DOMAIN+path;
+	}
+	
 
 	public static int PostSignUp(UserBo user )
 	{
 		DefaultHttpClient client = new DefaultHttpClient();
-		//HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000);
+		//HttpConnectionParams.setConnectionTimeout(client.getParams(),10000);
 	
 		HttpResponse response;
 		JSONObject json = new JSONObject();
-		String Url = "http://10.226.56.157/WYS/api/user/";
+		String Url = "http://192.168.0.10/WYS/api/user/";
 		
 		try
 		{
@@ -76,6 +85,22 @@ public  class WysApi
 		
 	}
 	
-	
+	public static int CheckUsername(String username)
+	{
+		HttpClient client = new DefaultHttpClient();
+		HttpResponse response;
+		
+		
+		try
+		{
+			
+		}
+		catch(Exception exception)
+		{
+			
+		}
+		return 0;
+		
+	}
 	
 }
