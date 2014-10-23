@@ -8,6 +8,8 @@ public class UserBo extends BaseBusiness {
 	private String _password;
 	private String _email;
 	private int _domainId;
+	private int _roleId;
+	
 	
 	
 	public String get_username() {
@@ -40,9 +42,8 @@ public class UserBo extends BaseBusiness {
 	public void set_roleId(int _roleId) {
 		this._roleId = _roleId;
 	}
-	private int _roleId;
 	
-	
+
 	
 	
 	

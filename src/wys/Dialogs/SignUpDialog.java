@@ -3,9 +3,11 @@ package wys.Dialogs;
 import wys.AsyncTasks.IAsyncTask;
 import wys.AsyncTasks.SignupTask;
 import wys.Business.UserBo;
+import wys.CustomInterfaces.OnCheckUserListener;
 import wys.CustomInterfaces.OnSignUpListener;
 import wys.FrontLayer.UserVerification;
 import wys.Helpers.PreferenceHelper;
+import wys.Http.*;
 
 import com.example.wys_client.R;
 
@@ -17,16 +19,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.sax.StartElementListener;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import wys.httpApi.*;
 
 public class SignUpDialog extends Dialog implements
-		android.view.View.OnClickListener, OnSignUpListener {
+		android.view.View.OnClickListener, OnSignUpListener,
+		OnCheckUserListener {
 
 	private static final int SUCCESS = 0;
 	private static final int ERROR = 1;
+	private static final int AVAIL = 0;
+	private static final int NOTAVAIL = 1;
+	private boolean IsUsernameAvail = false;
+	private boolean IsUsernameValidated = false;
+
 	private PreferenceHelper _prefeHelper;
 	private Context _ctx;
 	private Button btn_signup;
@@ -56,6 +64,7 @@ public class SignUpDialog extends Dialog implements
 		btn_signup = (Button) findViewById(R.id.btn_signup);
 		btn_signup.setOnClickListener(this);
 		et_username = (EditText) findViewById(R.id.et_username);
+
 		et_password = (EditText) findViewById(R.id.et_password);
 		et_email = (EditText) findViewById(R.id.et_email);
 		et_confirm = (EditText) findViewById(R.id.et_confirm);
@@ -65,31 +74,15 @@ public class SignUpDialog extends Dialog implements
 	@Override
 	public void onClick(View v) {
 
-		OpenVerificationScreen();
+		// OpenVerificationScreen();
 
-		/*
-		 * UserBo user = new UserBo(); String username =
-		 * et_username.getText().toString(); String password =
-		 * et_password.getText().toString(); String email =
-		 * et_email.getText().toString(); String confirm =
-		 * et_confirm.getText().toString();
-		 * 
-		 * if (CheckFields(username, password, email, confirm)) {
-		 * user.set_username(et_username.getText().toString());
-		 * user.set_password(et_password.getText().toString());
-		 * user.set_email(et_email.getText().toString()); IAsyncTask asyncTask =
-		 * new SignupTask(user, SignUpDialog.this);
-		 * asyncTask.ExecuteSignupTask(); }
-		 */
+		ValidateAndSignUpUser();
+
 	}
 
 	private void OpenVerificationScreen() {
 
 		SignUpDialog.this.dismiss();
-		/*
-		 * Intent i = new Intent(this._ctx,UserVerification.class);
-		 * _ctx.startActivity(i);
-		 */
 
 		VerificationDialog veriDialog = new VerificationDialog(_ctx);
 		veriDialog.setCanceledOnTouchOutside(false);
@@ -97,15 +90,41 @@ public class SignUpDialog extends Dialog implements
 
 	}
 
-	private boolean CheckFields(String username, String pass, String email,
-			String confirmPass) {
-		if (email.isEmpty()) {
+	private void ValidateAndSignUpUser() {
 
+		String username = et_username.getText().toString();
+		String password = et_password.getText().toString();
+		String email = et_email.getText().toString();
+		String confirm = et_confirm.getText().toString();
+
+		if (ValidateFields(username, password, email, confirm)) {
+			ValidateUsernameAvail(username);
+
+		}
+
+	}
+
+	private boolean ValidateFields(String username, String pass, String email,
+			String confirmPass) {
+		if (username.isEmpty() && pass.isEmpty() && email.isEmpty()
+				&& confirmPass.isEmpty()) {
+			et_username.setError("username cannot be empty");
 			et_email.setError("email cannot be empty");
-			/*
-			 * Toast.makeText(_ctx, "All fields are mandatory",
-			 * Toast.LENGTH_SHORT) .show();
-			 */
+			et_password.setError("password cannot be empty");
+			et_confirm.setError("please enter confirm password");
+
+			return false;
+		}
+
+		else if (username.isEmpty() || username.length() <= 0) {
+
+			et_username.setError("username cannot be empty");
+			return false;
+
+		}
+
+		else if (email.isEmpty() || email.length() <= 0) {
+			et_email.setError("email cannot be empty");
 			return false;
 
 		} else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email)
@@ -114,16 +133,10 @@ public class SignUpDialog extends Dialog implements
 			return false;
 		}
 
-		else if (username.isEmpty()) {
-			et_username.setError("username cannot be empty");
-			return false;
-
-		}
-
-		else if (pass.isEmpty()) {
+		else if (pass.isEmpty() || pass.length() <= 0) {
 			et_password.setError("password cannot be empty");
 			return false;
-		} else if (confirmPass.isEmpty()) {
+		} else if (confirmPass.isEmpty() || confirmPass.length() <= 0) {
 			et_confirm.setError("please enter confirm password");
 			return false;
 		} else {
@@ -138,6 +151,37 @@ public class SignUpDialog extends Dialog implements
 
 	}
 
+	private void ValidateUsernameAvail(String username) {
+		IAsyncTask asyncTask = new SignupTask(SignUpDialog.this);
+
+		asyncTask.ExcecuteCheckUsername(username);
+
+		// return SignupTask.CheckUserAvail(username);
+	}
+
+	private void SaveUser(String username, String pass, String email) {
+		UserBo user = new UserBo();
+		user.set_username(username);
+		user.set_password(pass);
+		user.set_email(email);
+		IAsyncTask asyncTask = new SignupTask(user, SignUpDialog.this);
+		asyncTask.ExecuteSignupTask();
+	}
+
+	@Override
+	public void OnUserAvail() {
+		String username = et_username.getText().toString();
+		SaveUser(et_username.getText().toString(), et_password.getText()
+				.toString(), et_email.getText().toString());
+	}
+
+	@Override
+	public void OnUserNotAvail() {
+
+		et_username.setError("Sorry, Username is not available");
+
+	}
+
 	@Override
 	public void OnSignUpSuccess() {
 		/*
@@ -145,13 +189,11 @@ public class SignUpDialog extends Dialog implements
 		 * _prefeHelper.set_firstTimeUse(false); }
 		 */
 		SignUpDialog.this.dismiss();
-		if (_OnSignUpListener != null) {
-
-		}
+		
 		Toast.makeText(
 				_ctx,
 				"Email with Verification Code has been sent to you, Please Verify your Account",
-				Toast.LENGTH_SHORT).show();
+				Toast.LENGTH_LONG).show();
 	}
 
 	@Override

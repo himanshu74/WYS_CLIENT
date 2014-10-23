@@ -8,4 +8,13 @@ public class BaseAsyncTaskManager implements IAsyncTask {
 		
 	}
 
+	@Override
+	public void ExcecuteCheckUsername(String username) {
+		
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
 }
