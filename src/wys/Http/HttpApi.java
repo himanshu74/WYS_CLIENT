@@ -1,6 +1,7 @@
 package wys.Http;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -23,6 +25,7 @@ import org.apache.http.params.DefaultedHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 import wys.Business.BaseBusiness;
@@ -87,33 +90,67 @@ public class HttpApi implements IHttpApi {
 			HttpRequestBase httpRequest, Jsonhandler parser) {
 
 		HttpResponse response = ExecuteHttpRequest(httpRequest);
-		int statusCode = response.getStatusLine().getStatusCode();
+		if (response != null) {
+			int statusCode = response.getStatusLine().getStatusCode();
 
-		switch (statusCode) {
-		case 200:
-			if (parser != null) {
-				try {
-					return parser.Parse(response);
-				} catch (Exception ex) {
-					Log.e(CLASS_TAG, "", ex);
+			switch (statusCode) {
+			case 200:
+				if (parser != null) {
+					try {
+						return parser.Parse(response);
+					} catch (Exception ex) {
+						Log.e(CLASS_TAG, "", ex);
+					}
 				}
+
+			default:
+				return null;
 			}
 
-		default:
-			return null;
 		}
+
+		return null;
 
 	}
 
 	@Override
 	public String DoHttpPost(String url, NameValuePair... nameValuePairs) {
 
+		HttpPost httPost = CreateHttpPost(url, nameValuePairs);
+		HttpResponse response = ExecuteHttpRequest(httPost);
+		if (response != null) {
+			switch (response.getStatusLine().getStatusCode()) {
+			case 200:
+				try {
+					return EntityUtils.toString(response.getEntity());
+				} catch (Exception ex) {
+					Log.e(CLASS_TAG, "", ex);
+				}
+				break;
+				
+				case 204:
+					return "0";
+
+			default:
+				break;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public HttpPost CreateHttpPost(String url, NameValuePair... nameValuePairs) {
-		return null;
+
+		HttpPost httpPost = new HttpPost(url);
+
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(
+					StripNulls(nameValuePairs), HTTP.UTF_8));
+
+		} catch (UnsupportedEncodingException ue) {
+			Log.e(CLASS_TAG, "", ue);
+		}
+		return httpPost;
 	}
 
 	@Override

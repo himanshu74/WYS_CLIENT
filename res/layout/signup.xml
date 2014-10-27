@@ -9,16 +9,30 @@
         android:id="@+id/rel_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:background="#35C1DC"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" >
 
         <TextView
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
             android:text="Lets Sign You Up"
-            android:textColor="@color/darkblue"
+            android:textColor="#FFFFFF"
             android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tv_step1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Step-1 of 2"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="italic" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -51,7 +65,8 @@
             android:background="@drawable/apptheme_edit_text_holo_light"
             android:ems="10"
             android:hint="e-mail"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:text="himanshu.cse74@gmail.com" />
 
         <EditText
             android:id="@+id/et_password"
@@ -63,7 +78,8 @@
             android:background="@drawable/apptheme_edit_text_holo_light"
             android:ems="10"
             android:hint="password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:text="him" />
 
         <EditText
             android:id="@+id/et_confirm"
@@ -75,7 +91,8 @@
             android:background="@drawable/apptheme_edit_text_holo_light"
             android:ems="10"
             android:hint="confirm-password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:text="him" />
     </RelativeLayout>
 
     <RelativeLayout

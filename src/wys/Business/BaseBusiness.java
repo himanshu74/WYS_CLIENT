@@ -3,14 +3,26 @@ package wys.Business;
 public class BaseBusiness {
 
 	
-	private int isUsernameAvail;
 
-	public int getIsUsernameAvail() {
-		return isUsernameAvail;
+	private int status;
+	private String token;
+
+	public String getToken() {
+		return token;
 	}
 
-	public void setIsUsernameAvail(int isUsernameAvail) {
-		this.isUsernameAvail = isUsernameAvail;
+	public void setToken(String token) {
+		this.token = token;
 	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
 	
 }

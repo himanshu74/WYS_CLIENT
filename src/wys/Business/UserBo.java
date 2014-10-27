@@ -9,6 +9,9 @@ public class UserBo extends BaseBusiness {
 	private String _email;
 	private int _domainId;
 	private int _roleId;
+	private String verificationCode;
+	private int _isVerified;
+	private String _token;
 	
 	
 	
@@ -43,9 +46,32 @@ public class UserBo extends BaseBusiness {
 		this._roleId = _roleId;
 	}
 	
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
 
 	
+	public int get_isVerified() {
+		return _isVerified;
+	}
+	public void set_isVerified(int _isVerified) {
+		this._isVerified = _isVerified;
+	}
 	
+
+
+
+
+
+	public String get_token() {
+		return _token;
+	}
+	public void set_token(String _token) {
+		this._token = _token;
+	}
 	
 	
 }

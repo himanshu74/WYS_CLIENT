@@ -4,5 +4,6 @@ public interface OnCheckUserListener {
 
 	void OnUserAvail();
 	void OnUserNotAvail();
+	void OnUnsuccessfulOperation();
 	
 }

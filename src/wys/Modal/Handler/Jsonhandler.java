@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.util.Log;
 import wys.Business.BaseBusiness;
@@ -15,7 +19,8 @@ public class Jsonhandler {
 
 	private static final String CLASS_TAG = Jsonhandler.class.getSimpleName();
 	public int ResponseCode = 200;
-
+	public Boolean isSingleResultExpected=false;
+    
 	private void SetValuesFromHeader(HttpResponse response) {
 
 		if (!response.getStatusLine().equals(null)) {
@@ -24,7 +29,7 @@ public class Jsonhandler {
 
 	}
 
-	public List<? extends BaseBusiness> Parse(HttpResponse response) {
+	public List<? extends BaseBusiness> Parse(HttpResponse response) throws JSONException {
 		SetValuesFromHeader(response);
 		List<BaseBusiness> busObject = null;
 		if (ResponseCode != 204 && ResponseCode != 304) {
@@ -51,8 +56,15 @@ public class Jsonhandler {
 		 * appended to a StringBuilder and returned as String.
 		 */
 
-		BufferedReader buReader = new BufferedReader(new InputStreamReader(
-				inStream));
+		BufferedReader buReader = null;
+		try {
+
+			buReader = new BufferedReader(new InputStreamReader(inStream,
+					"UTF-8"));
+		} catch (Exception exception) {
+			Log.e(CLASS_TAG, "", exception);
+		}
+
 		StringBuilder sb = new StringBuilder();
 
 		String line = null;
@@ -76,10 +88,9 @@ public class Jsonhandler {
 
 		}
 		return sb.toString();
-
 	}
 
-	protected List<BaseBusiness> SaveToModal(String json) {
+	protected List<BaseBusiness> SaveToModal(String json) throws JSONException {
 		return null;
 
 	}

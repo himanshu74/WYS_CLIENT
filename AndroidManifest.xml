@@ -34,6 +34,14 @@
                 <action android:name="android.intent.action.main"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name="wys.User.UserHomeActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter >
+                <action android:name="android.intent.action.main"/>
+            </intent-filter>
+        </activity>
+        
     </application>
 
 </manifest>

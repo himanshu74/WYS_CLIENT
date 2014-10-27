@@ -12,8 +12,27 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp" >
+        android:background="#35C1DC"
+        android:paddingBottom="6dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="6dp" >
 
+        <TextView
+            android:id="@+id/tv_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please verify your account"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_step2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="step-2 of 2"
+            android:textColor="#FFFFFF"
+            android:textStyle="italic" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -28,13 +47,12 @@
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:textSize="18sp"
             android:background="@drawable/apptheme_edit_text_holo_light"
+            android:hint="Verification code"
             android:maxLength="4"
-            android:hint="Verification code" />
+            android:textSize="18sp" />
     </RelativeLayout>
 
-  
     <RelativeLayout
         android:id="@+id/rel_verify"
         android:layout_width="fill_parent"
@@ -62,7 +80,5 @@
             android:text="Resend Code"
             android:textColor="#FFFFFF" />
     </RelativeLayout>
-
-
 
 </RelativeLayout>

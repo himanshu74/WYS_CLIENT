@@ -8,6 +8,7 @@ import wys.CustomInterfaces.OnSignUpListener;
 import wys.FrontLayer.UserVerification;
 import wys.Helpers.PreferenceHelper;
 import wys.Http.*;
+import wysApi.SessionManager;
 
 import com.example.wys_client.R;
 
@@ -28,26 +29,15 @@ public class SignUpDialog extends Dialog implements
 		android.view.View.OnClickListener, OnSignUpListener,
 		OnCheckUserListener {
 
-	private static final int SUCCESS = 0;
-	private static final int ERROR = 1;
-	private static final int AVAIL = 0;
-	private static final int NOTAVAIL = 1;
-	private boolean IsUsernameAvail = false;
-	private boolean IsUsernameValidated = false;
-
-	private PreferenceHelper _prefeHelper;
 	private Context _ctx;
 	private Button btn_signup;
 	private EditText et_username, et_password, et_email, et_confirm;
 
-	private OnSignUpListener _OnSignUpListener;
-
-	public SignUpDialog(Context context, PreferenceHelper preferenceHelper,
-			OnSignUpListener onListener) {
+	public SignUpDialog(Context context, PreferenceHelper preferenceHelper
+		) {
 		super(context);
 		this._ctx = context;
-		this._prefeHelper = preferenceHelper;
-		this._OnSignUpListener = onListener;
+
 	}
 
 	@Override
@@ -73,8 +63,6 @@ public class SignUpDialog extends Dialog implements
 
 	@Override
 	public void onClick(View v) {
-
-		// OpenVerificationScreen();
 
 		ValidateAndSignUpUser();
 
@@ -152,7 +140,7 @@ public class SignUpDialog extends Dialog implements
 	}
 
 	private void ValidateUsernameAvail(String username) {
-		IAsyncTask asyncTask = new SignupTask(SignUpDialog.this);
+		IAsyncTask asyncTask = new SignupTask(SignUpDialog.this, _ctx);
 
 		asyncTask.ExcecuteCheckUsername(username);
 
@@ -164,13 +152,13 @@ public class SignUpDialog extends Dialog implements
 		user.set_username(username);
 		user.set_password(pass);
 		user.set_email(email);
-		IAsyncTask asyncTask = new SignupTask(user, SignUpDialog.this);
+		IAsyncTask asyncTask = new SignupTask(user, SignUpDialog.this, _ctx);
 		asyncTask.ExecuteSignupTask();
 	}
 
 	@Override
 	public void OnUserAvail() {
-		String username = et_username.getText().toString();
+
 		SaveUser(et_username.getText().toString(), et_password.getText()
 				.toString(), et_email.getText().toString());
 	}
@@ -184,16 +172,11 @@ public class SignUpDialog extends Dialog implements
 
 	@Override
 	public void OnSignUpSuccess() {
-		/*
-		 * if (_prefeHelper.is_firstTimeUse() == true) {
-		 * _prefeHelper.set_firstTimeUse(false); }
-		 */
+
 		SignUpDialog.this.dismiss();
-		
-		Toast.makeText(
-				_ctx,
-				"Email with Verification Code has been sent to you, Please Verify your Account",
-				Toast.LENGTH_LONG).show();
+
+		OpenVerificationScreen();
+
 	}
 
 	@Override
@@ -204,4 +187,13 @@ public class SignUpDialog extends Dialog implements
 				Toast.LENGTH_SHORT).show();
 	}
 
+	@Override
+	public void OnUnsuccessfulOperation() {
+
+		Toast.makeText(_ctx,
+				"Sorry, Something went wrong wiith the server, Try again",
+				Toast.LENGTH_LONG).show();
+	}
+	
+	
 }
