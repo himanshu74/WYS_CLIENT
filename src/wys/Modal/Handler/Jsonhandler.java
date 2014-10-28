@@ -14,24 +14,24 @@ import wys.Business.BaseBusiness;
 public class Jsonhandler {
 
 	private static final String CLASS_TAG = Jsonhandler.class.getSimpleName();
-	public int ResponseCode = 200;
+	public int responseCode = 200;
 
-	private void SetValuesFromHeader(HttpResponse response) {
+	private void setValuesFromHeader(HttpResponse response) {
 
 		if (!response.getStatusLine().equals(null)) {
-			ResponseCode = response.getStatusLine().getStatusCode();
+			responseCode = response.getStatusLine().getStatusCode();
 		}
 
 	}
 
-	public List<? extends BaseBusiness> Parse(HttpResponse response) {
-		SetValuesFromHeader(response);
+	public List<? extends BaseBusiness> parse(HttpResponse response) {
+		setValuesFromHeader(response);
 		List<BaseBusiness> busObject = null;
-		if (ResponseCode != 204 && ResponseCode != 304) {
+		if (responseCode != 204 && responseCode != 304) {
 			try {
-				String responseString = ConvertStreamToString(response
+				String responseString = convertStreamToString(response
 						.getEntity().getContent());
-				busObject = SaveToModal(responseString);
+				busObject = saveToModal(responseString);
 			} catch (IllegalStateException e) {
 				Log.e(CLASS_TAG, "", e);
 
@@ -43,7 +43,7 @@ public class Jsonhandler {
 		return busObject;
 	}
 
-	private String ConvertStreamToString(InputStream inStream) {
+	private String convertStreamToString(InputStream inStream) {
 		/*
 		 * To convert the InputStream to String we use the
 		 * BufferedReader.readLine() method. We iterate until the BufferedReader
@@ -79,7 +79,7 @@ public class Jsonhandler {
 
 	}
 
-	protected List<BaseBusiness> SaveToModal(String json) {
+	protected List<BaseBusiness> saveToModal(String json) {
 		return null;
 
 	}

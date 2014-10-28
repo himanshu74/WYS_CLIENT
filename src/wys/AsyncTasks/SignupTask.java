@@ -3,7 +3,7 @@ package wys.AsyncTasks;
 import java.util.List;
 
 import wys.Business.BaseBusiness;
-import wys.Business.UserBo;
+import wys.Business.UserBO;
 import wys.CustomInterfaces.OnCheckUserListener;
 import wys.CustomInterfaces.OnSignUpListener;
 import wys.Dialogs.SignUpDialog;
@@ -22,11 +22,11 @@ public class SignupTask extends BaseAsyncTaskManager {
     private OnCheckUserListener _oncheCheckUserListener;
 	
 	
-	private UserBo _user;
+	private UserBO _user;
 	
 
 	public SignupTask(BaseBusiness user, OnSignUpListener onSignUpListener) {
-		this._user = (UserBo) user;
+		this._user = (UserBO) user;
 		this._onSignUpListener = onSignUpListener;
 	}
 	
@@ -49,11 +49,11 @@ public class SignupTask extends BaseAsyncTaskManager {
 	}
 	
 	
-	private class PostAsync extends AsyncTask<UserBo, Void, Integer> {
+	private class PostAsync extends AsyncTask<UserBO, Void, Integer> {
 
 		@Override
-		protected Integer doInBackground(UserBo... params) {
-			int result = WysApi.PostSignUp(params[0]);
+		protected Integer doInBackground(UserBO... params) {
+			int result = WysApi.postSignUp(params[0]);
 			return result;
 		}
 
@@ -64,14 +64,14 @@ public class SignupTask extends BaseAsyncTaskManager {
 				
 				if(_onSignUpListener !=null)
 				{
-					_onSignUpListener.OnSignUpSuccess();
+					_onSignUpListener.onSignUpSuccess();
 				}
 				
 			} else if(result == ERROR) {
 				
 				if(_onSignUpListener !=null)
 				{
-					_onSignUpListener.OnSignUpFail();
+					_onSignUpListener.onSignUpFail();
 				}
 				
 
@@ -85,7 +85,7 @@ public class SignupTask extends BaseAsyncTaskManager {
 	
 	public static int CheckUserAvail(String username)
 	{
-		List<BaseBusiness> users = new WysApi().GetUserByUsername(username);
+		List<UserBO> users = new WysApi().getUserByUsername(username);
 		int result = users.get(0).getIsUsernameAvail();
 		return result;
 	}
@@ -97,7 +97,7 @@ public class SignupTask extends BaseAsyncTaskManager {
 
 		@Override
 		protected Integer doInBackground(String... params) {
-			List<BaseBusiness> users = new WysApi().GetUserByUsername(params[0]);
+			List<UserBO> users = new WysApi().getUserByUsername(params[0]);
 			int result = users.get(0).getIsUsernameAvail();
 			return result;
 		}
@@ -108,13 +108,13 @@ public class SignupTask extends BaseAsyncTaskManager {
 			if(result == AVAIL)
 			{
 				if(_oncheCheckUserListener!=null)
-					_oncheCheckUserListener.OnUserAvail();
+					_oncheCheckUserListener.onUserAvail();
 				
 			}
 			else 
 			{
 				if(_oncheCheckUserListener !=null)
-					_oncheCheckUserListener.OnUserNotAvail();
+					_oncheCheckUserListener.onUserNotAvail();
 					
 			}
 			

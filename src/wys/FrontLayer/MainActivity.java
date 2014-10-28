@@ -19,18 +19,17 @@ import android.widget.Button;
 public class MainActivity extends BaseActivity implements OnSignUpListener {
 
 	// Private Variables and Views
-	private Button btn_signup;
+	private Button btnSignup;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		InitControls();
-
+		initControls();
 	}
 
-	private void InitControls() {
-      btn_signup = (Button)findViewById(R.id.btn_sign_up);
+	private void initControls() {
+      btnSignup = (Button)findViewById(R.id.btn_sign_up);
 		/*if (GetWYSPreferences().is_firstTimeUse() == false) 
 		{
              btn_signup.setText("Sign in");
@@ -46,15 +45,15 @@ public class MainActivity extends BaseActivity implements OnSignUpListener {
 //	super.onResume();
 //	}
 	
-	public void MoveInsideWys(final View v) {
+	public void moveInsideWys(final View v) {
 
-		if (GetWYSPreferences().is_firstTimeUse()) {
+		if (getWYSPreferences().isFirstTimeUse()) {
 
 			SignUpDialog signUpDialog = new SignUpDialog(MainActivity.this,
-					GetWYSPreferences(),MainActivity.this);
+					getWYSPreferences(),MainActivity.this);
 			signUpDialog.setCanceledOnTouchOutside(false);
 			signUpDialog.show();
-		} else if (!GetWYSPreferences().is_firstTimeUse()) {
+		} else if (!getWYSPreferences().isFirstTimeUse()) {
 			SignInDialog signInDialog = new SignInDialog(MainActivity.this);
 			signInDialog.setCanceledOnTouchOutside(false);
 			signInDialog.show();
@@ -63,13 +62,13 @@ public class MainActivity extends BaseActivity implements OnSignUpListener {
 	}
 
 	@Override
-	public void OnSignUpSuccess() {
+	public void onSignUpSuccess() {
 		
-		btn_signup.setText("Sign in");
+		btnSignup.setText("Sign in");
 	}
 
 	@Override
-	public void OnSignUpFail() {
+	public void onSignUpFail() {
 		// TODO Auto-generated method stub
 		
 	}

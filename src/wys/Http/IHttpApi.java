@@ -14,15 +14,15 @@ import wys.Modals.AppModal;
 
 public interface IHttpApi {
 
-	public List<? extends BaseBusiness> DoHttpRequestJson(HttpRequestBase httpRequest, Jsonhandler parser);
+	public List<? extends BaseBusiness> doHttpRequestJson(HttpRequestBase httpRequest, Jsonhandler parser);
 
-	public String DoHttpPost(String url, NameValuePair... nameValuePairs );
+	public String doHttpPost(String url, NameValuePair... nameValuePairs );
 	
-	public HttpPost CreateHttpPost(String url, NameValuePair... nameValuePairs);
+	public HttpPost createHttpPost(String url, NameValuePair... nameValuePairs);
 	
-	public HttpGet CreateHttpGet(String url,NameValuePair... nameValuePairs);
+	public HttpGet createHttpGet(String url,NameValuePair... nameValuePairs);
 	
-	public HttpResponse ExecuteHttpRequest(HttpRequestBase httpRequest);
+	public HttpResponse executeHttpRequest(HttpRequestBase httpRequest);
 	
 	
 	

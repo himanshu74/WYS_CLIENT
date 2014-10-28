@@ -15,7 +15,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import wys.Business.BaseBusiness;
-import wys.Business.UserBo;
+import wys.Business.CategoryBO;
+import wys.Business.UserBO;
 import wys.Http.HttpApi;
 import wys.Http.IHttpApi;
 import wys.Modal.Handler.ObjectHandler;
@@ -31,7 +32,7 @@ public class WysApi {
 
 	private IHttpApi mHttpApi;
 
-	private final DefaultHttpClient mHttpClient = HttpApi.CreateHttpclient();
+	private final DefaultHttpClient mHttpClient = HttpApi.createHttpclient();
 
 	public String GetUrl(String path) {
 		return HOST + DOMAIN + path;
@@ -40,27 +41,29 @@ public class WysApi {
 	public WysApi() {
 		this.mHttpApi = new HttpApi(mHttpClient);
 	}
+	
+	
 
-	public static int PostSignUp(UserBo user) {
+	public static int postSignUp(UserBO user) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		// HttpConnectionParams.setConnectionTimeout(client.getParams(),10000);
 
 		HttpResponse response;
 		JSONObject json = new JSONObject();
-		String Url = "http://192.168.0.3/WYS/api/user/";
+		String url = "http://192.168.0.3/WYS/api/user/";
 
 		try {
-			HttpPost post = new HttpPost(Url);
-			json.put("Username", user.get_username());
-			json.put("Password", user.get_password());
-			json.put("Email", user.get_email());
-			json.put("RoleId", user.get_roleId());
-			json.put("DomainId", user.get_domainId());
+			HttpPost post = new HttpPost(url);
+			json.put("Username", user.getUsername());
+			json.put("Password", user.getPassword());
+			json.put("Email", user.getEmail());
+			json.put("RoleId", user.getRoleId());
+			json.put("DomainId", user.getDomainId());
 
-			StringEntity se = new StringEntity(json.toString());
-			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
+			StringEntity stringEntity = new StringEntity(json.toString());
+			stringEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
 					"application/json"));
-			post.setEntity(se);
+			post.setEntity(stringEntity);
 			response = client.execute(post);
 			if (response != null) {
 
@@ -79,19 +82,31 @@ public class WysApi {
 		}
 
 	}
+	
+	public List<CategoryBO> getCategoryDetails(){
+		
+		HttpGet get = mHttpApi.createHttpGet(GetUrl(UrlManager.SHOW_CATEGORIES));
+		ObjectHandler objectHandler = new ObjectHandler();
+		
+		@SuppressWarnings("unchecked")
+		List<CategoryBO> categories = (List<CategoryBO>) mHttpApi.doHttpRequestJson(get, objectHandler);
+		
+		return categories;
+	}
+	
 
-	public  List<BaseBusiness> GetUserByUsername(String username) {
+	public  List<UserBO> getUserByUsername(String username) {
 
 		String path = String.format(UrlManager.FETCH_CHECK_USERNAME_URL,
 				username);
 	
 		
-		HttpGet get = mHttpApi.CreateHttpGet(GetUrl(path));
-		 ObjectHandler objectHanlder = new ObjectHandler();
+		HttpGet get = mHttpApi.createHttpGet(GetUrl(path));
+		 ObjectHandler objectHandler = new ObjectHandler();
 
 		 @SuppressWarnings("unchecked")
-		 List<BaseBusiness> users = (List<BaseBusiness>) mHttpApi.DoHttpRequestJson(get,
-				 objectHanlder);
+		 List<UserBO> users = (List<UserBO>) mHttpApi.doHttpRequestJson(get,
+				 objectHandler);
 
 		return users;
 	}

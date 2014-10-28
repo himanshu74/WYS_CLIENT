@@ -14,6 +14,12 @@ public class BaseAsyncTaskManager implements IAsyncTask {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void fetchCategories(){
+		
+		// TODO Auto-generated method stub
+	}
 
 	
 	

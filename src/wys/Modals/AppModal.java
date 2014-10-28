@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class AppModal implements IAppModal {
 
 	public static final String TABLE_NAME="";
-	public static final int DeleteValue=1; 
+	public static final int DELETE_VALUE=1; 
 	
 	protected static Cursor list(SQLiteDatabase database, String tables, String[] columns,
 			String selection, String[] selectionArgs, String groupBy,

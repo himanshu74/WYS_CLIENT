@@ -39,7 +39,7 @@ public class HttpApi implements IHttpApi {
 		this.mHttpApiClient = httpClient;
 	}
 
-	private static final HttpParams CreateHttpParams() {
+	private static final HttpParams createHttpParams() {
 		final HttpParams params = new BasicHttpParams();
 
 		// Turn off stale checking. Our connections break all the time anyway,
@@ -52,9 +52,9 @@ public class HttpApi implements IHttpApi {
 		return params;
 	}
 
-	public static DefaultHttpClient CreateHttpclient() {
+	public static DefaultHttpClient createHttpclient() {
 		DefaultHttpClient client = new DefaultHttpClient();
-		final HttpParams params = CreateHttpParams();
+		final HttpParams params = createHttpParams();
 		client.setParams(params);
 
 		SchemeRegistry registry = new SchemeRegistry();
@@ -67,7 +67,7 @@ public class HttpApi implements IHttpApi {
 		return httpClient;
 	}
 
-	public HttpResponse ExecuteHttpRequest(HttpRequestBase httpRequest) {
+	public HttpResponse executeHttpRequest(HttpRequestBase httpRequest) {
 		HttpResponse response = null;
 		try {
 			mHttpApiClient.getConnectionManager().closeExpiredConnections();
@@ -83,17 +83,17 @@ public class HttpApi implements IHttpApi {
 	}
 
 	@Override
-	public List<? extends BaseBusiness> DoHttpRequestJson(
+	public List<? extends BaseBusiness> doHttpRequestJson(
 			HttpRequestBase httpRequest, Jsonhandler parser) {
 
-		HttpResponse response = ExecuteHttpRequest(httpRequest);
+		HttpResponse response = executeHttpRequest(httpRequest);
 		int statusCode = response.getStatusLine().getStatusCode();
 
 		switch (statusCode) {
 		case 200:
 			if (parser != null) {
 				try {
-					return parser.Parse(response);
+					return parser.parse(response);
 				} catch (Exception ex) {
 					Log.e(CLASS_TAG, "", ex);
 				}
@@ -106,20 +106,20 @@ public class HttpApi implements IHttpApi {
 	}
 
 	@Override
-	public String DoHttpPost(String url, NameValuePair... nameValuePairs) {
+	public String doHttpPost(String url, NameValuePair... nameValuePairs) {
 
 		return null;
 	}
 
 	@Override
-	public HttpPost CreateHttpPost(String url, NameValuePair... nameValuePairs) {
+	public HttpPost createHttpPost(String url, NameValuePair... nameValuePairs) {
 		return null;
 	}
 
 	@Override
-	public HttpGet CreateHttpGet(String url, NameValuePair... nameValuePairs) {
+	public HttpGet createHttpGet(String url, NameValuePair... nameValuePairs) {
 
-		String query = URLEncodedUtils.format(StripNulls(nameValuePairs),
+		String query = URLEncodedUtils.format(stripNulls(nameValuePairs),
 				HTTP.UTF_8);
 
 		HttpGet httpGet = null;
@@ -136,7 +136,7 @@ public class HttpApi implements IHttpApi {
 
 	}
 
-	public List<NameValuePair> StripNulls(NameValuePair... nameValuePairs) {
+	public List<NameValuePair> stripNulls(NameValuePair... nameValuePairs) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 
 		for (NameValuePair pair : nameValuePairs) {

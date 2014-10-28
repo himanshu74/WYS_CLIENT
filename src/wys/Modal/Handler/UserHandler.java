@@ -9,14 +9,14 @@ import org.json.JSONObject;
 
 import android.util.Log;
 import wys.Business.BaseBusiness;
-import wys.Business.UserBo;
+import wys.Business.UserBO;
 
 public class UserHandler extends Jsonhandler {
 
 	private static final String CLASS_TAG = UserHandler.class.getSimpleName();
 
 	@Override
-	protected List<BaseBusiness> SaveToModal(String json) {
+	protected List<BaseBusiness> saveToModal(String json) {
 		List<BaseBusiness> userList = new ArrayList<BaseBusiness>();
 		JSONArray jsonArray;
 
@@ -27,12 +27,12 @@ public class UserHandler extends Jsonhandler {
 				for (int i = 0; i < jsonArray.length(); i++) {
 
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
-					UserBo user = new UserBo();
-					user.set_username(jsonObject.getString("Username"));
-					user.set_password(jsonObject.getString("Password"));
-					user.set_email(jsonObject.getString("Email"));
-					user.set_roleId(jsonObject.getInt("RoleId"));
-					user.set_domainId(jsonObject.getInt("DomainId"));
+					UserBO user = new UserBO();
+					user.setUsername(jsonObject.getString("Username"));
+					user.setPassword(jsonObject.getString("Password"));
+					user.setEmail(jsonObject.getString("Email"));
+					user.setRoleId(jsonObject.getInt("RoleId"));
+					user.setDomainId(jsonObject.getInt("DomainId"));
 					userList.add(user);
 				}
 			}

@@ -10,7 +10,7 @@ public class ObjectHandler extends Jsonhandler {
 
 //	private static final String CLASS_TAG = ObjectHandler.class.getSimpleName();
 
-	public List<BaseBusiness> SaveToModal(String json) {
+	public List<BaseBusiness> saveToModal(String json) {
 		BaseBusiness busObject = null;
         List<BaseBusiness> list = new ArrayList<BaseBusiness>();
 		/*

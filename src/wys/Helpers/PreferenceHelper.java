@@ -11,36 +11,36 @@ public class PreferenceHelper {
 	private static final String IS_FIRST_TIME_USE = "firstTimeUse";
 
 	// PRIVATE VARIABLES
-	private Context ctx;
-	private boolean _firstTimeUse;
+	private Context context_;
+	private boolean firstTimeUse_;
 
-	public boolean is_firstTimeUse() {
-		return _firstTimeUse;
+	public boolean isFirstTimeUse() {
+		return firstTimeUse_;
 	}
 
-	public void set_firstTimeUse(boolean _firstTimeUse) {
-		this._firstTimeUse = _firstTimeUse;
-		UpdateIsFirstTimeUse(_firstTimeUse);
+	public void set_firstTimeUse(boolean firstTimeUse_) {
+		this.firstTimeUse_ = firstTimeUse_;
+		updateIsFirstTimeUse(firstTimeUse_);
 	}
 
 	
 	// Constructor
 	public PreferenceHelper(Context context) {
-		this.ctx = context;
-		LoadPreferences();
+		this.context_ = context;
+		loadPreferences();
 	}
 
-	private void LoadPreferences() {
-		SharedPreferences wysPreferences = ctx.getSharedPreferences(PREF_KEY,
-				ctx.MODE_PRIVATE);
+	private void loadPreferences() {
+		SharedPreferences wysPreferences = context_.getSharedPreferences(PREF_KEY,
+				context_.MODE_PRIVATE);
 
-		_firstTimeUse = wysPreferences.getBoolean(IS_FIRST_TIME_USE, true);
+		firstTimeUse_ = wysPreferences.getBoolean(IS_FIRST_TIME_USE, true);
 
 	}
 
-	private void UpdateIsFirstTimeUse(boolean value) {
-		SharedPreferences wysPrefs = ctx.getSharedPreferences(PREF_KEY,
-				ctx.MODE_PRIVATE);
+	private void updateIsFirstTimeUse(boolean value) {
+		SharedPreferences wysPrefs = context_.getSharedPreferences(PREF_KEY,
+				context_.MODE_PRIVATE);
 		SharedPreferences.Editor editor = wysPrefs.edit();
 		editor.putBoolean(IS_FIRST_TIME_USE, false);
 		editor.commit();
