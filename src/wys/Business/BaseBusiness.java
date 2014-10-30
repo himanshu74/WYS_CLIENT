@@ -1,6 +1,10 @@
 package wys.Business;
 
-public class BaseBusiness {
+import java.io.Serializable;
+
+import android.support.v4.os.ParcelableCompat;
+
+public class BaseBusiness implements Serializable {
 
 	
 

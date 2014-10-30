@@ -1,10 +1,11 @@
-package wys.Modal.Handler;
+package wys.Business.Handler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -29,9 +30,9 @@ public class Jsonhandler {
 
 	}
 
-	public List<? extends BaseBusiness> Parse(HttpResponse response) throws JSONException {
+	public ArrayList<? extends BaseBusiness> Parse(HttpResponse response) throws JSONException {
 		SetValuesFromHeader(response);
-		List<BaseBusiness> busObject = null;
+		ArrayList<BaseBusiness> busObject = null;
 		if (ResponseCode != 204 && ResponseCode != 304) {
 			try {
 				String responseString = ConvertStreamToString(response
@@ -90,7 +91,7 @@ public class Jsonhandler {
 		return sb.toString();
 	}
 
-	protected List<BaseBusiness> SaveToModal(String json) throws JSONException {
+	protected ArrayList<BaseBusiness> SaveToModal(String json) throws JSONException {
 		return null;
 
 	}

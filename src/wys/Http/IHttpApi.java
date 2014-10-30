@@ -1,5 +1,6 @@
 package wys.Http;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -9,12 +10,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import wys.Business.BaseBusiness;
-import wys.Modal.Handler.Jsonhandler;
+import wys.Business.Handler.Jsonhandler;
 import wys.Modals.AppModal;
 
 public interface IHttpApi {
 
-	public List<? extends BaseBusiness> DoHttpRequestJson(HttpRequestBase httpRequest, Jsonhandler parser);
+	public ArrayList<? extends BaseBusiness> DoHttpRequestJson(HttpRequestBase httpRequest, Jsonhandler parser);
 
 	public String DoHttpPost(String url, NameValuePair... nameValuePairs );
 	

@@ -100,14 +100,6 @@ public class VerificationDialog extends Dialog implements
 	}
 
 	@Override
-	public void OnSignInSuccess() {
-		// TODO Auto-generated method stub
-		VerificationDialog.this.dismiss();
-		Intent i = new Intent(_ctx, UserHomeActivity.class);
-		_ctx.startActivity(i);
-	}
-
-	@Override
 	public void OnSignInFail() {
 		// TODO Auto-generated method stub
 		VerificationDialog.this.dismiss();
@@ -145,6 +137,19 @@ public class VerificationDialog extends Dialog implements
 		Toast.makeText(_ctx, "Something went wrong, Please try again",
 				Toast.LENGTH_LONG).show();
 		;
+
+	}
+
+	@Override
+	public void OnUserSignIN() {
+		VerificationDialog.this.dismiss();
+		Intent i = new Intent(_ctx, UserHomeActivity.class);
+		_ctx.startActivity(i);
+	}
+
+	@Override
+	public void OnOrgSignIN() {
+		// TODO Auto-generated method stub
 
 	}
 

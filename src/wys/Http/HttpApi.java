@@ -29,7 +29,7 @@ import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 import wys.Business.BaseBusiness;
-import wys.Modal.Handler.Jsonhandler;
+import wys.Business.Handler.Jsonhandler;
 import wys.Modals.AppModal;
 
 public class HttpApi implements IHttpApi {
@@ -86,7 +86,7 @@ public class HttpApi implements IHttpApi {
 	}
 
 	@Override
-	public List<? extends BaseBusiness> DoHttpRequestJson(
+	public ArrayList<? extends BaseBusiness> DoHttpRequestJson(
 			HttpRequestBase httpRequest, Jsonhandler parser) {
 
 		HttpResponse response = ExecuteHttpRequest(httpRequest);

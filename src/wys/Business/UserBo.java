@@ -2,8 +2,9 @@ package wys.Business;
 
 public class UserBo extends BaseBusiness {
 
+
 	// Properties
-	
+	private int _userId;
 	private String _username;
 	private String _password;
 	private String _email;
@@ -52,7 +53,12 @@ public class UserBo extends BaseBusiness {
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
 	}
-
+	public int get_userId() {
+		return _userId;
+	}
+	public void set_userId(int _userId) {
+		this._userId = _userId;
+	}
 	
 	public int get_isVerified() {
 		return _isVerified;

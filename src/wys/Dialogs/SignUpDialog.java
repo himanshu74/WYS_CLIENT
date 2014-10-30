@@ -32,6 +32,7 @@ public class SignUpDialog extends Dialog implements
 	private Context _ctx;
 	private Button btn_signup;
 	private EditText et_username, et_password, et_email, et_confirm;
+	private static final int USER_ROLEID = 1;
 
 	public SignUpDialog(Context context, PreferenceHelper preferenceHelper
 		) {
@@ -152,6 +153,7 @@ public class SignUpDialog extends Dialog implements
 		user.set_username(username);
 		user.set_password(pass);
 		user.set_email(email);
+		user.set_roleId(USER_ROLEID);
 		IAsyncTask asyncTask = new SignupTask(user, SignUpDialog.this, _ctx);
 		asyncTask.ExecuteSignupTask();
 	}

@@ -20,6 +20,7 @@
         <activity
             android:name="wys.FrontLayer.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,20 +29,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="wys.FrontLayer.UserVerification"
+            android:name="wys.User.UserHomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-            <intent-filter >
-                <action android:name="android.intent.action.main"/>
+            <intent-filter>
+                <action android:name="android.intent.action.main" />
             </intent-filter>
         </activity>
         <activity
-            android:name="wys.User.UserHomeActivity"
+            android:name="wys.ORG.OrgHomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-            <intent-filter >
-                <action android:name="android.intent.action.main"/>
+            <intent-filter>
+                <action android:name="android.intent.action.main" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="wys.ForumObjects.CategoryListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.main" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="wys.ForumObjects.CategoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.main" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

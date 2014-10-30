@@ -22,11 +22,14 @@ import org.json.JSONObject;
 import android.util.Log;
 import android.widget.Toast;
 import wys.Business.BaseBusiness;
+import wys.Business.TopicBo;
 import wys.Business.UserBo;
+import wys.Business.Handler.CategoryHandler;
+import wys.Business.Handler.ObjectHandler;
+import wys.Business.Handler.TopicHandler;
+import wys.Business.Handler.UserHandler;
 import wys.Http.HttpApi;
 import wys.Http.IHttpApi;
-import wys.Modal.Handler.ObjectHandler;
-import wys.Modal.Handler.UserHandler;
 
 public class WysApi {
 
@@ -34,8 +37,9 @@ public class WysApi {
 	private static final int ERROR = 1;
 
 	private static final String HOST = "http://";
-	// private static final String DOMAIN = "192.168.0.2/WYS/api/";
-	private static final String DOMAIN = "129.107.148.205/WYS/api/";
+	private static final String DOMAIN = "192.168.0.2/WYS/api/";
+	// private static final String DOMAIN = "129.107.147.231/WYS/api/";
+	// private static final String DOMAIN = "10.226.30.117/WYS/api/";
 
 	private IHttpApi mHttpApi;
 
@@ -113,7 +117,34 @@ public class WysApi {
 
 	}
 
-	public List<BaseBusiness> GetUserByUsername(String username) {
+	// Time not Yet Provided
+	public int PostTopic(TopicBo topic) {
+
+		NameValuePair[] postBody = new NameValuePair[3];
+		postBody[0] = (new BasicNameValuePair("Name", topic.get_name()));
+		postBody[1] = (new BasicNameValuePair("DomainId",
+				Integer.toString(topic.get_domainId())));
+		postBody[2] = (new BasicNameValuePair("UserId", Integer.toString(topic
+				.get_userId())));
+		/*postBody[3] = (new BasicNameValuePair("BeginDate", topic
+				.get_beginDate().toString()));*/
+		
+		// Yet to Provide topic start time
+		
+		
+		String url = GetUrl(UrlManager.FETCH_POST_TOPIC_URL);
+		String response = mHttpApi.DoHttpPost(url, postBody);
+		if (!response.equals(null) && response.equals("0")) {
+			return SUCCESS;
+
+		} else {
+			return ERROR;
+
+		}
+
+	}
+
+	public ArrayList<BaseBusiness> GetUserByUsername(String username) {
 
 		String path = String.format(UrlManager.FETCH_CHECK_USERNAME_URL,
 				username);
@@ -122,33 +153,33 @@ public class WysApi {
 		ObjectHandler objectHanlder = new ObjectHandler();
 
 		@SuppressWarnings("unchecked")
-		List<BaseBusiness> users = (List<BaseBusiness>) mHttpApi
+		ArrayList<BaseBusiness> users = (ArrayList<BaseBusiness>) mHttpApi
 				.DoHttpRequestJson(get, objectHanlder);
 
 		return users;
 	}
 
-	public List<BaseBusiness> DoVerifyUser(String username, String code) {
+	public ArrayList<BaseBusiness> DoVerifyUser(String username, String code) {
 		String path = String.format(UrlManager.FETCH_VERIFY_USER_URL, username,
 				code);
 		HttpGet get = mHttpApi.CreateHttpGet(GetUrl(path));
 		ObjectHandler objectHandler = new ObjectHandler();
 
 		@SuppressWarnings("unchecked")
-		List<BaseBusiness> users = (List<BaseBusiness>) mHttpApi
+		ArrayList<BaseBusiness> users = (ArrayList<BaseBusiness>) mHttpApi
 				.DoHttpRequestJson(get, objectHandler);
 
 		return users;
 	}
 
-	public List<BaseBusiness> DoSignIn(String username, String password) {
+	public ArrayList<BaseBusiness> DoSignIn(String username, String password) {
 		String path = String.format(UrlManager.FETCH_SIGNIN_URL, username,
 				password);
 		HttpGet get = mHttpApi.CreateHttpGet(GetUrl(path));
 		UserHandler userHandler = new UserHandler();
 		userHandler.isSingleResultExpected = true;
 		@SuppressWarnings("unchecked")
-		List<BaseBusiness> users = (List<BaseBusiness>) mHttpApi
+		ArrayList<BaseBusiness> users = (ArrayList<BaseBusiness>) mHttpApi
 				.DoHttpRequestJson(get, userHandler);
 		if (users != null) {
 			SessionManager.setUserBo(users.get(0));
@@ -157,7 +188,7 @@ public class WysApi {
 		return users;
 	}
 
-	public List<BaseBusiness> DoResendVerificationCode(String username,
+	public ArrayList<BaseBusiness> DoResendVerificationCode(String username,
 			String email) {
 		String path = String.format(UrlManager.FETCH_RESEND_CODE_URL, username,
 				email);
@@ -165,9 +196,33 @@ public class WysApi {
 		ObjectHandler objectHandler = new ObjectHandler();
 
 		@SuppressWarnings("unchecked")
-		List<BaseBusiness> users = (List<BaseBusiness>) mHttpApi
+		ArrayList<BaseBusiness> users = (ArrayList<BaseBusiness>) mHttpApi
 				.DoHttpRequestJson(get, objectHandler);
 		return users;
+	}
+
+	public ArrayList<BaseBusiness> GetCategories() {
+		String path = String.format(UrlManager.FETCH_GETCATEGORIES_URL);
+		HttpGet get = mHttpApi.CreateHttpGet(GetUrl(path));
+		CategoryHandler categoryHandler = new CategoryHandler();
+
+		@SuppressWarnings("unchecked")
+		ArrayList<BaseBusiness> cats = (ArrayList<BaseBusiness>) mHttpApi
+				.DoHttpRequestJson(get, categoryHandler);
+		return cats;
+	}
+
+	public ArrayList<BaseBusiness> getTopics(int catId) {
+
+		String path = String.format(UrlManager.FETCH_GETTOPICS_URL, catId);
+		HttpGet get = mHttpApi.CreateHttpGet(GetUrl(path));
+		TopicHandler topicHandler = new TopicHandler();
+		@SuppressWarnings("unchecked")
+		ArrayList<BaseBusiness> topics = (ArrayList<BaseBusiness>) mHttpApi
+				.DoHttpRequestJson(get, topicHandler);
+
+		return topics;
+
 	}
 
 }

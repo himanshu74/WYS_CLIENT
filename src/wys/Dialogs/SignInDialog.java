@@ -3,7 +3,9 @@ package wys.Dialogs;
 import wys.AsyncTasks.SignInTask;
 import wys.Business.UserBo;
 import wys.CustomInterfaces.OnSIgnInListener;
+import wys.ORG.OrgHomeActivity;
 import wys.User.UserHomeActivity;
+import wysApi.SessionManager;
 
 import com.example.wys_client.R;
 
@@ -22,7 +24,7 @@ public class SignInDialog extends Dialog implements OnClickListener,
 
 	private EditText et_username;
 	private EditText et_password;
-	private Button btn_signin;
+	private Button btn_signin, btn_forgotPass;
 	private Context _ctx;
 
 	public SignInDialog(Context context) {
@@ -39,6 +41,8 @@ public class SignInDialog extends Dialog implements OnClickListener,
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_password = (EditText) findViewById(R.id.et_password);
 		btn_signin = (Button) findViewById(R.id.btn_signin);
+		btn_forgotPass = (Button) findViewById(R.id.btn_forgotPass);
+		btn_forgotPass.setOnClickListener(this);
 		btn_signin.setOnClickListener(this);
 
 	}
@@ -46,6 +50,7 @@ public class SignInDialog extends Dialog implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == btn_signin.getId()) {
+
 			String username = et_username.getText().toString();
 			String password = et_password.getText().toString();
 			if (ValidateFields(username, password)) {
@@ -57,6 +62,14 @@ public class SignInDialog extends Dialog implements OnClickListener,
 						_ctx);
 				signInTask.ExecuteSignIn();
 			}
+		}
+		else if(v.getId() == btn_forgotPass.getId())
+		{
+			SignInDialog.this.dismiss();
+			ForgotPassword forgotPassword= new ForgotPassword(_ctx);
+			forgotPassword.setCanceledOnTouchOutside(false);
+			forgotPassword.show();
+			
 		}
 	}
 
@@ -72,27 +85,43 @@ public class SignInDialog extends Dialog implements OnClickListener,
 	}
 
 	@Override
-	public void OnSignInSuccess() {
-		SignInDialog.this.dismiss();
-		Intent i = new Intent(_ctx,UserHomeActivity.class);
-		_ctx.startActivity(i);
-	}
-
-	@Override
 	public void OnSignInFail() {
-	    et_username.setText("");
-	    et_password.setText("");
-		Toast.makeText(_ctx, "OOPS!!  We didnt recognize you, Try again",  Toast.LENGTH_LONG).show();;
+		et_username.setText("");
+		et_password.setText("");
+		Toast.makeText(_ctx, "OOPS!!  We didnt recognize you, Try again",
+				Toast.LENGTH_LONG).show();
+		;
 
 	}
 
 	@Override
 	public void OnStillNotVerified() {
 		SignInDialog.this.dismiss();
-		VerificationDialog verDialog= new VerificationDialog(_ctx);
+		VerificationDialog verDialog = new VerificationDialog(_ctx);
 		verDialog.setCanceledOnTouchOutside(false);
 		verDialog.show();
-		
+
 	}
 
+	@Override
+	public void OnUserSignIN() {
+		SignInDialog.this.dismiss();
+		Intent i = new Intent(_ctx, UserHomeActivity.class);
+		_ctx.startActivity(i);
+	}
+
+	@Override
+	public void OnOrgSignIN() {
+		SignInDialog.this.dismiss();
+		Intent i = new Intent(_ctx, OrgHomeActivity.class);
+		_ctx.startActivity(i);
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		SessionManager.setUserBo(null);
+		SignInDialog.this.dismiss();
+		super.onBackPressed();
+	}
 }

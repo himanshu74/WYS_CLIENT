@@ -8,7 +8,11 @@
         android:id="@+id/rel_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:background="#35C1DC"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" >
 
         <TextView
             android:id="@+id/tv_header"
@@ -16,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Sign in"
-            android:textColor="@color/darkblue"
+            android:textColor="#FFFFFF"
             android:textSize="22sp" />
     </RelativeLayout>
 
@@ -66,9 +70,28 @@
             android:layout_centerInParent="true"
             android:background="@drawable/blue_theme_button_selector"
             android:padding="10dp"
-            
             android:text="Sign me in"
             android:textColor="#FFFFFF" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_forgotPass"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rel_button"
+        android:layout_marginTop="20dp" >
+
+        <Button
+            android:id="@+id/btn_forgotPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#0B60C6"
+            android:padding="8dp"
+            android:text="Forgot Password ??"
+            android:textColor="#F4F407"
+            android:textSize="15sp"
+            android:textStyle="italic" />
     </RelativeLayout>
 
 </RelativeLayout>

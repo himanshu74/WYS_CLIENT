@@ -1,5 +1,6 @@
 package wys.AsyncTasks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import wys.Business.BaseBusiness;
@@ -11,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class VerifyUserTask extends BaseAsyncTaskManager {
@@ -19,7 +22,7 @@ public class VerifyUserTask extends BaseAsyncTaskManager {
 	private OnVerifyingUser _onVerifyingUser;
 
 	private Context _ctx;
-	private ProgressDialog progressDialog = null;
+	private ProgressBar  progressBar = null;
 
 	public VerifyUserTask(OnVerifyingUser OnVerifyingUser, Context context) {
 		_onVerifyingUser = OnVerifyingUser;
@@ -44,7 +47,7 @@ public class VerifyUserTask extends BaseAsyncTaskManager {
 		@Override
 		protected Integer doInBackground(UserBo... params) {
 			int result = -1;
-			List<BaseBusiness> users = new WysApi().DoVerifyUser(
+			ArrayList<BaseBusiness> users = new WysApi().DoVerifyUser(
 					params[0].get_username(), params[0].getVerificationCode());
 			if (users != null) {
 				result = users.get(0).getStatus();
@@ -83,7 +86,7 @@ public class VerifyUserTask extends BaseAsyncTaskManager {
 			int result = -1;
 			String username = params[0].get_username();
 			String email = params[0].get_email();
-			List<BaseBusiness> users = new WysApi().DoResendVerificationCode(
+			ArrayList<BaseBusiness> users = new WysApi().DoResendVerificationCode(
 					username, email);
 			result = users.get(0).getStatus();
 			return result;
@@ -91,28 +94,22 @@ public class VerifyUserTask extends BaseAsyncTaskManager {
 
 		@Override
 		protected void onPreExecute() {
-			progressDialog = new ProgressDialog(_ctx);
+			/*progressDialog = new ProgressDialog(_ctx);
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			// Set the dialog title to 'Loading...'
-			// progressDialog.setTitle("Please wait..");
 			progressDialog.setMessage("Logging in...");
-			// Set the dialog message to 'Loading application View, please
-			// wait...'
-			// progressDialog.setMessage("Loading application View, please wait...");
-			// This dialog can't be canceled by pressing the back key
-			progressDialog.setCancelable(false);
-			// This dialog isn't indeterminate
 			progressDialog.setIndeterminate(false);
-
-			// Display the progress dialog
-			progressDialog.show();
+			progressDialog.show();*/
+			
+			progressBar = new ProgressBar(_ctx);	
+			progressBar.setIndeterminate(true);
+			progressBar.setVisibility(View.VISIBLE);
 			super.onPreExecute();
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
 
-			progressDialog.dismiss();
+			progressBar.setVisibility(View.INVISIBLE);
 			if (result == SUCCESS) {
 				if (_onVerifyingUser != null) {
 					_onVerifyingUser.OnResendSucces();

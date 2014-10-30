@@ -1,5 +1,6 @@
 package wys.AsyncTasks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import wys.Business.BaseBusiness;
@@ -27,13 +28,14 @@ public class SignupTask extends BaseAsyncTaskManager {
 
 	private UserBo _user;
 
-	public SignupTask(BaseBusiness user, OnSignUpListener onSignUpListener,Context ctx) {
+	public SignupTask(BaseBusiness user, OnSignUpListener onSignUpListener,
+			Context ctx) {
 		this._user = (UserBo) user;
 		this._onSignUpListener = onSignUpListener;
 		this._ctx = ctx;
 	}
 
-	public SignupTask(OnCheckUserListener onCheckUserListener,Context ctx) {
+	public SignupTask(OnCheckUserListener onCheckUserListener, Context ctx) {
 		this._oncheCheckUserListener = onCheckUserListener;
 		this._ctx = ctx;
 	}
@@ -61,33 +63,32 @@ public class SignupTask extends BaseAsyncTaskManager {
 
 		@Override
 		protected void onPreExecute() {
-			
-		progressDialog = new ProgressDialog(_ctx);
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  
-        //Set the dialog title to 'Loading...' 
-		progressDialog.setTitle("Please wait..");
-        progressDialog.setMessage("while we sign you up");  
-        //Set the dialog message to 'Loading application View, please wait...'  
-       // progressDialog.setMessage("Loading application View, please wait...");  
-        //This dialog can't be canceled by pressing the back key  
-        progressDialog.setCancelable(false);  
-        //This dialog isn't indeterminate  
-        progressDialog.setIndeterminate(false);  
-       
-        
-        //Display the progress dialog  
-        progressDialog.show();
-		}
-		@Override
-		protected void onProgressUpdate(Void... values) {
-			super.onProgressUpdate(values);
+
+			progressDialog = new ProgressDialog(_ctx);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			// Set the dialog title to 'Loading...'
+			progressDialog.setTitle("Please wait..");
+			progressDialog.setMessage("while we sign you up");
+			// Set the dialog message to 'Loading application View, please
+			// wait...'
+			// progressDialog.setMessage("Loading application View, please wait...");
+			// This dialog can't be canceled by pressing the back key
+			progressDialog.setCancelable(false);
+			// This dialog isn't indeterminate
+			progressDialog.setIndeterminate(false);
+
+			// Display the progress dialog
+			progressDialog.show();
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
 
 			progressDialog.dismiss();
-			Toast.makeText(_ctx,"Email with verification code has been sent to your email address, PLease verify your account", Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					_ctx,
+					"Email with verification code has been sent to your email address, PLease verify your account",
+					Toast.LENGTH_LONG).show();
 			if (result == SUCCESS) {
 
 				if (_onSignUpListener != null) {
@@ -108,7 +109,7 @@ public class SignupTask extends BaseAsyncTaskManager {
 	}
 
 	public static int CheckUserAvail(String username) {
-		List<BaseBusiness> users = new WysApi().GetUserByUsername(username);
+		ArrayList<BaseBusiness> users = new WysApi().GetUserByUsername(username);
 		int result = users.get(0).getStatus();
 		return result;
 	}

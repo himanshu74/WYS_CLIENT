@@ -1,4 +1,4 @@
-package wys.Modal.Handler;
+package wys.Business.Handler;
 
 
 import java.util.ArrayList;
@@ -10,9 +10,9 @@ public class ObjectHandler extends Jsonhandler {
 
 //	private static final String CLASS_TAG = ObjectHandler.class.getSimpleName();
 
-	public List<BaseBusiness> SaveToModal(String json) {
+	public ArrayList<BaseBusiness> SaveToModal(String json) {
 		BaseBusiness busObject = null;
-        List<BaseBusiness> list = new ArrayList<BaseBusiness>();
+		ArrayList<BaseBusiness> list = new ArrayList<BaseBusiness>();
 		int value = Integer.parseInt(json.trim());
 		busObject = new BaseBusiness();
 		busObject.setStatus(value);

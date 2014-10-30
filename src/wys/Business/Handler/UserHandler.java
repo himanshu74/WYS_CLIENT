@@ -1,4 +1,4 @@
-package wys.Modal.Handler;
+package wys.Business.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ public class UserHandler extends Jsonhandler {
 	private static final String CLASS_TAG = UserHandler.class.getSimpleName();
 
 	@Override
-	protected List<BaseBusiness> SaveToModal(String json) throws JSONException {
-		List<BaseBusiness> userList = new ArrayList<BaseBusiness>();
+	protected ArrayList<BaseBusiness> SaveToModal(String json) throws JSONException {
+		ArrayList<BaseBusiness> userList = new ArrayList<BaseBusiness>();
 		JSONArray jsonArray;
 		
 		if(isSingleResultExpected){
@@ -48,6 +48,7 @@ public class UserHandler extends Jsonhandler {
 	
 	private UserBo getUserBoFromJson(JSONObject jsonObject) throws JSONException{
 		UserBo user = new UserBo();
+		user.set_userId(jsonObject.getInt("UserId"));
 		user.set_username(jsonObject.getString("Username"));
 		user.set_password(jsonObject.getString("Password"));
 		user.set_email(jsonObject.getString("Email"));
